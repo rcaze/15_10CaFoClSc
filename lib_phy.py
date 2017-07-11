@@ -6,7 +6,7 @@ from neuron import h
 from collections import deque
 from traits.api import HasTraits, Int, Float, List, Bool
 PROJECT_NAME = "15_01CaJaSc"
-J_MDL_REL = "Models/Jia2011.hoc"
+J_MDL = "./Models/Jia2011.hoc"
 
 
 class Stimulation(HasTraits):
@@ -203,7 +203,7 @@ class NEURONModel(object):
     Add procedure to insert synapses and recording device on different input
     site, and control their timing
     """
-    def __init__(self, hoc_model=J_MDL_REL, dt=0.01):
+    def __init__(self, hoc_model=J_MDL, dt=0.01):
         """
         Parameters
         ----------
