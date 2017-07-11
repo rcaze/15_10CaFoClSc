@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from plot import adjust_spines, raster
 import h5py
 from neuron import h
 from collections import deque
 from traits.api import HasTraits, Int, Float, List, Bool
-from plot import adjust_spines, raster
 PROJECT_NAME = "15_01CaJaSc"
 J_MDL_REL = "Models/Jia2011.hoc"
 
@@ -609,7 +609,7 @@ def show_v(model,   sec_name, seg_num=0, color="blue"):
             voltage = np.array(model.data[sec_name][seg_num])
             plt.plot(time,   voltage, color=color)
         except AttributeError:
-            print "No simulation have been launched"
+            print("No simulation have been launched")
         ax.set_xlabel("Time (ms)")
         ax.set_ylabel("Voltage (mV)")
         ax.set_xlim(0,   model.TSTOP)
@@ -718,7 +718,7 @@ def synaptic_democracy(model, step, target_epsp, max_w=5):
                 # Break the while loop when the target epsp is reached
                 break
         if model.weights[i] == max_w:
-            print "end up because of weights"
+            print("end up because of weights")
 
     return model.weights
 
@@ -917,7 +917,7 @@ def run_simul(model,  stim, el=None, crop=None, bin_size=1):
     for i,   shift in enumerate(shift_range):
         # Shift the group of correlated neurons
         stim.shift = int(shift)
-        print "progression:",   i/float(len(shift_range))
+        print("progression:",   i/float(len(shift_range)))
         # Select only the stimulation episode
         spikes = stim.spikes[:,  100:250]
         model(spikes,   bin_size=bin_size, el=el)
@@ -959,7 +959,7 @@ def generate_data(short=False):
     # Select fix input sites or not
     dend_num = [70, 22, 7, 42, 63, 77, 30]
     pos = [0.6, 0.66, 1.0, 1.0, 1.0, 0.6, 0.6]
-    syn_type = "NmdaSynapse"
+    syn_type = "Exp2Syn"
     fix = [("dend[%d]" % dend_num[i], pos[i], syn_type)
            for i in range(len(dend_num))]
     model, stim = set_simul(sites_n, group_size, syn_type=syn_type, fix=fix)
@@ -969,13 +969,13 @@ def generate_data(short=False):
     bin_size = 10
     # Lower the elementary weights because the baseline is higher
     el = 0.28
-    print "Generating tuning data in control condition"
+    print("Generating tuning data in control condition")
     soma_v, dend_v = run_simul(model, stim, el,
                                bin_size=bin_size, crop=TUNING)
     time_v = np.array(model.rec_t)
     data_savelist = ["soma_v", "dend_v"]
 
-    print "Generating expected/measured data in control condition"
+    print("Generating expected/measured data in control condition")
     # Cancel spiking
     model.spike = False
     strength = np.arange(1, 6)*el*2
@@ -983,14 +983,14 @@ def generate_data(short=False):
     meas_c = range(EM)
     vtrace_c = range(EM)
     for i in range(EM):
-        print "site:", i
+        print("site:", i)
         vtrace_c[i], exp_c[i], meas_c[i] = expected_measured(model,
                                                              strength,
                                                              i)
     vtrace_s, exp_s, meas_s = expected_measured(model, strength)
     data_savelist += ["vtrace_s", "exp_s", "meas_s",
                       "vtrace_c", "exp_c", "meas_c"]
-    print "Generating data in hyperpolarized condition"
+    print("Generating data in hyperpolarized condition")
     model.spike = True
     # Inject current in the cell
     clamp = h.IClamp(model.sections["soma"](0.5))
@@ -1002,7 +1002,7 @@ def generate_data(short=False):
                                    bin_size=bin_size, crop=TUNING)
     data_savelist += ["soma_v_h", "dend_v_h", "time_v"]
 
-    print "Generating expected/measured data in hyperpolarized condition"
+    print("Generating expected/measured data in hyperpolarized condition")
     # Generate the data for only one site
     EM = 7
     exp_c_h = range(EM)
@@ -1010,7 +1010,7 @@ def generate_data(short=False):
     vtrace_c_h = range(EM)
     strength = np.arange(1, 6)*el
     for i in range(EM):
-        print "site:", i
+        print ("site:", i)
         vtrace_c_h[i], exp_c_h[i], meas_c_h[i] = expected_measured(model,
                                                                    strength,
                                                                    i)
@@ -1018,7 +1018,7 @@ def generate_data(short=False):
     time_em = np.array(model.rec_t)
     data_savelist += ["vtrace_s_h", "exp_s_h", "meas_s_h",
                       "vtrace_c_h", "exp_c_h", "meas_c_h", "time_em"]
-    print "Saving data"
+    print("Saving data")
     with h5py.File("%s/data.hdf5" % DATA_FOLDER, "w") as hdf:
         for name in data_savelist:
             ar = locals()[name]

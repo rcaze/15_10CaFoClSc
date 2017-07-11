@@ -1,12 +1,10 @@
 import numpy as np
-#from neuron import h
-import matplotlib
-# matplotlib.backend("PyQt5agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 from matplotlib.collections import PatchCollection
 from matplotlib.offsetbox import AnchoredOffsetbox, AuxTransformBox, VPacker, \
     TextArea, HPacker
+
 
 # Functions necessary to make the figure of the article
 # Set the folder and the type of image I want as output
@@ -187,6 +185,7 @@ def epsp_measure(vrec,
 
 
 def get_coordinates(sec):
+    from neuron import h
     ptn = h.n3d(sec=sec)
     xc = []
     yc = []
@@ -672,6 +671,54 @@ def sub_actf(theta=0.4, save=None):
     if save:
         plt.savefig(save, dpi=800)
         plt.close()
+    else:
+        plt.show()
+
+
+def integration(dend, neuron, save=None, ymax=None, soma_th=False):
+    """
+    Plot the result of the dendritic integration of one or multiple subunit
+    Parameters
+    ----------
+    dend: list of int giving the integration of a dendrites
+
+    Returns
+    -------
+    plot of the dendritic integration
+    """
+    plt.close("all")
+
+    dend_int = neuron.dendritic_integration/2.
+
+    # Case where we want to plot somatic activity.
+    if soma_th:
+        fig, ax = plt.subplots(1, 1, figsize=(4, 4))
+        ax.plot(np.sum(dend_int, axis=0), color="black")
+        # plt.axhline(y=soma_th, linestyle='--', color='r')
+        plt.xlabel("Time")
+        plt.ylabel("Activity %")
+        adjust_spines(ax, ["left", "bottom"])
+        fig.tight_layout()
+        if ymax is not None:
+            ax.set_ylim(0, ymax)
+        if save is not None:
+            plt.savefig(save)
+        else:
+            plt.show()
+        return
+
+    fig, ax = plt.subplots(len(dend), 1, figsize=(4, 4), sharex=True)
+    for d, i in enumerate(dend):
+        ax[i].plot(neuron.dendritic_integration[d], color="black")
+        if ymax is not None:
+            ax[i].set_ylim(0, ymax)
+        adjust_spines(ax[i], ["left", "bottom"])
+    plt.xlabel("Time")
+    fig.tight_layout()
+    fig.text(0., 0.55, "Activity %", va='center', rotation='vertical')
+
+    if save is not None:
+        plt.savefig(save)
     else:
         plt.show()
 
