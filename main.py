@@ -18,7 +18,7 @@ for c_dir in dirs:
         os.makedirs(c_dir)
 
 # Go for quick generation of the biophysical data (if false take ~5 min)
-FAST = True
+FAST = False
 
 # Generate the biophysical if not existing
 try:
@@ -142,8 +142,8 @@ def fig_biophy():
     FIG_NAME = "%sFig%dB1%s" % (FIG_FOLDER, FIG_N, FIG_SUF)
     plot.tuning(data, save=FIG_NAME, colors=("red", "black"))
     FIG_NAME = "%sFig%dB2%s" % (FIG_FOLDER, FIG_N, FIG_SUF)
-    tun = [lib.tuning_int(dend_v, 0, -65),
-           lib.tuning_int(soma_v, -1, spike=True)]
+    tun = [lib_phy.tuning_int(dend_v, 0, -65),
+           lib_phy.tuning_int(soma_v, -1, spike=True)]
     plot.tuning(tun, save=FIG_NAME, colors=("gray", "red"))
 
     # Plot the voltage trace for single/multiple synaptic activation
@@ -193,6 +193,6 @@ def fig_biophy_hyperpol():
 
 if __name__ == "__main__":
     fig_binary_simple()
-    fig_stim_sel(10)
-    # fig_biophy()
-    # fig_biophy_hyperpol()
+    fig_stim_sel(1000)
+    fig_biophy()
+    fig_biophy_hyperpol()

@@ -960,7 +960,7 @@ def generate_data(short=False):
     dend_num = [70, 22, 7, 42, 63, 77, 30]
     pos = [0.6, 0.66, 1.0, 1.0, 1.0, 0.6, 0.6]
     syn_type = "NmdaSynapse"
-    # syn_type = "Exp2Syn" # should also work with this kind of synapse
+    #syn_type = "Exp2Syn" # should also work with this kind of synapse
     fix = [("dend[%d]" % dend_num[i], pos[i], syn_type)
            for i in range(len(dend_num))]
     model, stim = set_simul(sites_n, group_size, syn_type=syn_type, fix=fix)
