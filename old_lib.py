@@ -6,7 +6,6 @@ from collections import deque
 from traits.api import HasTraits, Int, Float, List, Bool
 from plot import adjust_spines, raster
 PROJECT_NAME = "15_01CaJaSc"
-J_MDL = "/home/rcaze/Documents/Articles/15_01CaJaFoSc/Scripts/Models/Jia2011.hoc"
 J_MDL_REL = "Models/Jia2011.hoc"
 
 
@@ -101,13 +100,13 @@ class Stimulation(HasTraits):
         try:
             assert self.group_size < self.n_neurons
         except AssertionError:
-            print "reset the number of neuron to match the group size"
+            print("reset the number of neuron to match the group size")
             self.n_neurons = self.group_size
 
         try:
             assert self.shift < self.n_neurons - self.group_size + 1
         except AssertionError:
-            print "shift trait too high,   reset to 0"
+            print("shift trait too high,   reset to 0")
             self.shift = 0
             return
 
@@ -204,7 +203,7 @@ class NEURONModel(object):
     Add procedure to insert synapses and recording device on different input
     site, and control their timing
     """
-    def __init__(self, hoc_model=J_MDL, dt=0.01):
+    def __init__(self, hoc_model=J_MDL_REL, dt=0.01):
         """
         Parameters
         ----------
@@ -369,17 +368,17 @@ class NEURONModel(object):
         except AttributeError:
             return "Weights or the input_locations not set. Simulation aborted"
         except AssertionError:
-            print "Weights or the input_locations not match. Set default w"
+            print("Weights or the input_locations not match. Set default w")
             self.weights = np.ones(len(self.input_locations))
 
         # Test if signal and stimulation match.
         try:
             assert len(input_spikes) == len(self.input_locations)
         except AssertionError:
-            print self.where_what
-            print input_spikes
-            print "Number of input neuron does not match number of synapses"
-            print "Aborting simulation"
+            print(self.where_what)
+            print(input_spikes)
+            print("Number of input neuron does not match number of synapses")
+            print("Aborting simulation")
             return
 
         # Set the input spike time
@@ -463,7 +462,7 @@ def synapses_location_print(neuron_model):
     """Print the location of all the synapses on a model
     the synapse location is not readable otherwise"""
     for seg in neuron_model.synapse_location:
-        print seg.sec.name(),   seg.x
+        print(seg.sec.name(),   seg.x)
 
 
 def tuning_int(data, dend_number, vrest=-75, spike=False):
@@ -565,7 +564,7 @@ def set_syn_thr(n_dend, group_size, clust_sens=False, offset=0):
 def section_print():
     """Printing the different section in the NEURON namespace"""
     for sec in h.allsec():
-        print sec.name()
+        print(sec.name())
 
 
 def epsp_measure(vrec,
@@ -948,7 +947,7 @@ def vlook(model):
 
 
 def generate_data(short=False):
-    """Generate all the data"""
+    """Generate all the data for the biophysic model"""
     DATA_FOLDER = "../Data/"
     EM = 7
     TUNING = 8

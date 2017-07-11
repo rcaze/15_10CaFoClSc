@@ -1,7 +1,7 @@
 import numpy as np
 #from neuron import h
 import matplotlib
-matplotlib.backend("PyQt5agg")
+# matplotlib.backend("PyQt5agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 from matplotlib.collections import PatchCollection

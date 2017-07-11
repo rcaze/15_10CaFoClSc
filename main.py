@@ -1,31 +1,40 @@
 import os
 import matplotlib
-matplotlib.use('Qt5Agg')
 import numpy as np
 import h5py
 import lib
 import plot
-import binary
 
-
-# Generate the necessary data (not necessary if lib is runned beforehand
-PROJ_NAME = "14_11CaClSc"
+# The global variables of the project
+PROJ_NAME = "15_01CaJaFoSc"
 FIG_FOLDER = "../Figs/Source/"
 FIG_SUF = ".png"
 DATA_FOLDER = "../Data/"
 
+# Create the folders if not existing
 dirs = [FIG_FOLDER, DATA_FOLDER]
 for c_dir in dirs:
     if not os.path.exists(c_dir):
         os.makedirs(c_dir)
 
+
+# Generate the data from the binary model if not existing
 try:
-    hdf = h5py.File("%s/data.hdf5" % DATA_FOLDER, "r")
-# Create a dataset if there is none
+    hdf = h5py.File("%s/data_binary.hdf5" % DATA_FOLDER, "r")
 except IOError:
-    print "Need to generate a set of data"
+    print("Need to generate a set of data")
+    model, stim = lib.generate_binary_data()
+
+
+
+"""
+# Generate the biophysical if not existing
+try:
+    hdf = h5py.File("%s/data_biophy.hdf5" % DATA_FOLDER, "r")
+except IOError:
+    print("Need to generate a set of data")
     model, stim = lib.generate_data()
-    print "Draw model stimulated points"
+    print("Draw model stimulated points")
     FIG_NAME = "%sFig%dD%s" % (FIG_FOLDER, 1, FIG_SUF)
     plot.shape(model, save=FIG_NAME)
 
@@ -46,7 +55,7 @@ data = [[1, 0.1, 0, 0.8, 0.12, 0, 0, 0.25],
         [0.2, 1, 0.15, 0.2, 0.17, 0.25, 0.2, 0.15]]
 
 data_h = [1, 0.8, 0.8, 0.85, 0.85, 0.78, 0.8, 0.85]
-
+"""
 
 def fig_stim_sel(NREP=10):
     FIG_N = 2

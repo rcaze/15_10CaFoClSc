@@ -1,4 +1,3 @@
-from traits.api import HasTraits, Int, List, Float
 import numpy as np
 import numpy.random as rd
 import unittest
@@ -6,6 +5,8 @@ import csv
 import plot
 import matplotlib.pyplot as plt
 from collections import deque
+import h5py
+from traits.api import HasTraits, Int, List, Float
 
 def bin2time(bins,
              bin_size=100):
@@ -518,7 +519,6 @@ def results_dend_rem(nrep, rem_dend=[1, 2, 3, 4, 5, 6]):
                 dist_np[res[1:]] += 1
                 dist_p_l[res_l[0]] += 1
                 dist_np_l[res_l[1:]] += 1
-        print res, res_l
     dists = [dist_p, dist_np, dist_p_l, dist_np_l]
     separability = separability / float(nrep)
     separability_l = separability_l / float(nrep)
@@ -632,7 +632,31 @@ def plot_integration(dend, neuron, save=None, ymax=None, soma_th=False):
         plt.show()
 
 
-FIG1 = False
+def generate_binary_data(DATA_FOLDER):
+    """Generate all data using a binary model and store the result in an
+    hdf5 file"""
+    stim = Stimulation()
+    stim.n_neurons = 200
+    stim.group_number = 2
+    stim.group_size = 100
+
+    neuron = BinaryModel()
+    neuron.synapses = syn_gen()
+    neuron.thresholds = [60, 40, 40]
+    neuron.d_spike = 60
+
+
+    data_savelist += ["vtrace_s_h", "exp_s_h", "meas_s_h",
+                      "vtrace_c_h", "exp_c_h", "meas_c_h", "time_em"]
+    print "Saving data"
+    with h5py.File("%s/data.hdf5" % DATA_FOLDER, "w") as hdf:
+        for name in data_savelist:
+            ar = locals()[name]
+            hdf.create_dataset(name, data=ar)
+
+
+
+FIG1 = True
 SUB = False
 PARSCAN = False
 DEND = True
