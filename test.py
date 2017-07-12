@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from lib import tuning_int
+from lib_phy import tuning_int
 
 
 class TestLib(unittest.TestCase):
@@ -12,5 +12,4 @@ class TestLib(unittest.TestCase):
                                [-65, -65]]])
         exp_out = np.array([1, 0])
         out = tuning_int(vrec_test, -1, -65)
-        print out
         np.testing.assert_array_equal(out, exp_out)
