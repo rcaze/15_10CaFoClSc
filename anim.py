@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation
 from neuron import h
 from matplotlib.pyplot import cm
-from lib import NEURONModel
+from lib_phy import NEURONModel
 from plot import get_coordinates, add_line, section_mark, adjust_spines
 import os
 FOLDER = '../Figs/Anim/'
@@ -197,6 +197,7 @@ if __name__ == "__main__":
     dend_num = [70, 22, 7, 42, 63, 77, 30]
     pos = [0.6, 0.66, 1.0, 1.0, 1.0, 0.6, 0.6]
     syn_type = "NmdaSynapse"
+    # syn_type = "Exp2Syn"
     fix = [("dend[%d]" % dend_num[i], pos[i], syn_type)
            for i in range(len(dend_num))]
     # Create the model and set the input locations
