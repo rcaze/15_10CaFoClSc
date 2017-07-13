@@ -174,7 +174,7 @@ def fig_biophy_hyperpol():
 
     # Plot the tuning of the soma and dendrites SIMULATION
     FIG_NAME = "%sFig%dB2%s" % (FIG_FOLDER, FIG_N, FIG_SUF)
-    tun = [lib.tuning_int(soma_v_h, -1, -90), lib.tuning_int(dend_v_h, 0, -76)]
+    tun = [lib_phy.tuning_int(soma_v_h, -1, -90), lib_phy.tuning_int(dend_v_h, 0, -76)]
     plot.tuning([tun[0], tun[1]], colors=("red", "black"), save=FIG_NAME)
 
     # Plot the tuning of the same and dendrites SIMULATION
